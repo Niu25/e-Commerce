@@ -39,9 +39,13 @@ public class ItemController {
 	public ResponseEntity<List<Item>> getItemsByName(@PathVariable String name) {
 		logger.info("<ItemController: getItemsByName> Getting item with name {} ...", name);
 		List<Item> items = itemRepository.findByName(name);
-		logger.info("<ItemController: getItemsByName> Item with name {} could not be found", name);
-		return items == null || items.isEmpty() ? ResponseEntity.notFound().build()
-				: ResponseEntity.ok(items);
+		if (items ==null || items.isEmpty()) {
+			logger.info("<ItemController: getItemsByName> Item with name {} could not be found", name);
+			return ResponseEntity.notFound().build();
+		} else {
+			logger.info("<ItemController: getItemsByName> Item with name {} found", name);
+			return ResponseEntity.ok(items);
+		}
 			
 	}
 	
